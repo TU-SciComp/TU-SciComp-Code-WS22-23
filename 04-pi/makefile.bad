@@ -1,0 +1,6 @@
+# TK18Oct2022
+BINARY		=	badpi
+SOURCE		=	$(BINARY).cpp
+-include ../shared/shared.mak
+
+

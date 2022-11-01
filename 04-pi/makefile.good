@@ -1,0 +1,6 @@
+# TK18Oct2022
+BINARY		=	goodpi
+SOURCE		=	$(BINARY).cpp
+-include ../shared/shared.mak
+
+
