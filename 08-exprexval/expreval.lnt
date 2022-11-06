@@ -1,0 +1,24 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*   File....: expreval.lnt                                                  */
+/*   Name....: PCLint+ Project Settings                                      */
+/*   Author..: Thorsten Koch                                                 */
+/*   Copyright (C) 2001-2022 by Thorsten Koch <koch@zib.de>                  */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// TK 29Jan2018
+-I/opt/pclint/config
+-max_threads=8
+-vt_depth=20
+-passes(3)
+-std=c++17
+-width(132,4)
+-"format=%f:%l: %t %n: %m"
++fsc // strings are const
++fan // anonoumus unions
+-ffc // Function takes Custody flag -> off
++fca // concert attributes to semantics
++metric_report
+-esym(534,feclearexcept)
+-esym(537,string,stdexcept,ctype.h)
+-esym(1756,buildin)

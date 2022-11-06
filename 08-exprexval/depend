@@ -1,0 +1,2 @@
+expreval.o: expreval.cpp expreval.h
+testit.o: testit.cpp expreval.h
