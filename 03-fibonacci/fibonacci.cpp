@@ -30,8 +30,8 @@ unsigned int fval(int i)
 
 unsigned int fib_recursive1(unsigned int const n)
 {
-   if (n <= 1)
-      return n;
+   if (n <= 2)
+      return 1;
   
    return fib_recursive1(n - 1) + fib_recursive1(n - 2);   
 }
@@ -41,7 +41,7 @@ unsigned int fib_recursive1(unsigned int const n)
  */
 unsigned int fib_recursive2(unsigned int const n)
 {
-   return (n <= 1) ? n : (fib_recursive2(n - 1) + fib_recursive2(n - 2));   
+   return (n <= 2) ? 1 : (fib_recursive2(n - 1) + fib_recursive2(n - 2));   
 }
 
 
