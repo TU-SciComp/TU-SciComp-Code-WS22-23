@@ -114,6 +114,6 @@ int main()
          sum += x[k * (test_size / 100000) + i];
 
    duration_ms = high_resolution_clock::now() - start_time_ms;
-   cout << "7 time= " << setprecision(0) << fixed << duration_ms.count() << " ms, sum= " << sum << endl; 
+   cout << "8 time= " << setprecision(0) << fixed << duration_ms.count() << " ms, sum= " << sum << endl; 
 }
 
