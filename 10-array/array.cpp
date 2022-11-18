@@ -7,7 +7,7 @@
 #include <vector>
 #include <cassert>
 
-auto const test_size = 100'000'000;
+auto constexpr test_size = 100'000'000;
 
 int main()
 {
@@ -23,20 +23,35 @@ int main()
    
    vector<double> x(test_size);
 
+   double* const y = new double[test_size];
+   
    assert(x.size() == test_size);
    
    for(auto i = 0; i < test_size; ++i)
+   {
       x[i] = i + 1.0;
-   
-   // 1 ======================================================================
+      y[i] = i + 1.0;
+   }
+      
+   // 0 ======================================================================
    auto sum           = 0.0;
    auto start_time_ms = high_resolution_clock::now();
 
    for(auto i =  0; i < test_size; i++)
-      sum += x[i];
+      sum += y[i];
 
    // Getting number of milliseconds as a double.
    duration<double, std::milli> duration_ms = high_resolution_clock::now() - start_time_ms;
+   cout << "0 time= " << setprecision(0) << fixed << duration_ms.count() << " ms, sum= " << sum << endl; 
+
+   // 1 ======================================================================
+   sum           = 0.0;
+   start_time_ms = high_resolution_clock::now();
+
+   for(auto i =  0; i < test_size; i++)
+      sum += x[i];
+
+   duration_ms = high_resolution_clock::now() - start_time_ms;
    cout << "1 time= " << setprecision(0) << fixed << duration_ms.count() << " ms, sum= " << sum << endl; 
 
    // 2 ======================================================================
@@ -115,5 +130,7 @@ int main()
 
    duration_ms = high_resolution_clock::now() - start_time_ms;
    cout << "8 time= " << setprecision(0) << fixed << duration_ms.count() << " ms, sum= " << sum << endl; 
+
+   delete y;
 }
 
