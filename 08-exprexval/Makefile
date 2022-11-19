@@ -20,7 +20,7 @@ VALGRIND	=	valgrind --tool=memcheck --leak-check=full \
 			--leak-resolution=high --show-reachable=yes
 ANALYZER	=	scan-build-10
 #
-LINTFLAGS	=	/opt/pclint/config/co-gcc.lnt $(NAME).lnt
+LINTFLAGS	=	/opt/pclint/config/co-clang.lnt $(NAME).lnt
 #
 CPPFLAGS	=	-I.
 CXXFLAGS	=	-std=c++17 -g3 -Og -Wall -Wextra  

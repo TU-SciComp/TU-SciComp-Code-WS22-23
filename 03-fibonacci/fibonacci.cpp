@@ -158,7 +158,7 @@ long fib_direct(unsigned int n)
 {
    // long double sqrtl();
    // c++20 numbers::phi
-   double const phi = (1.0 + sqrt(5.0)) / 2.0;
+   double constexpr phi = (1.0 + sqrt(5.0)) / 2.0;
 
    return lround(pow(phi, n) / sqrt(5.0));
 }

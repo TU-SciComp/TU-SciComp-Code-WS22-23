@@ -9,6 +9,7 @@
 */ 
 
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 #include <vector>
 #include <algorithm>
@@ -26,23 +27,23 @@ using std::vector;
  *  All weights and profits of the problems are expected to be >= 1.
  * \return profit of the optimal knapsack.
  */
-int knapsack(
-   vector<int> const& weight,          ///< vector holding the weights of the items.
-   vector<int> const& profit,          ///< vector holding the profits of the items.
-   int         const  weight_limit,    ///< weight limit of the knapsack.
-   vector<int>&       selected_items)  ///< vector to which the selected items are added.
+static unsigned int knapsack(
+   vector<unsigned int> const& weight,          ///< vector holding the weights of the items.
+   vector<unsigned int> const& profit,          ///< vector holding the profits of the items.
+   unsigned int         const  weight_limit,    ///< weight limit of the knapsack.
+   vector<unsigned int>&       selected_items)  ///< vector to which the selected items are added.
 {
    assert(*std::min_element(weight.begin(), weight.end()) >= 1);
    assert(*std::min_element(profit.begin(), profit.end()) >= 1);
    assert(weight_limit  >= 1);
    assert(weight.size() == profit.size());
 
-   int const           items = profit.size();
-   vector<vector<int>> best(items + 1, vector<int>(weight_limit + 1, 0));
+   unsigned int const           num_items = profit.size(); //lint !e712
+   vector<vector<unsigned int>> best(num_items + 1, vector<unsigned int>(weight_limit + 1, 0));
 
-   for(auto item = 1; item <= items; ++item)
+   for(auto item = 1U; item <= num_items; ++item)
    {
-      for(auto max_weight = 1; max_weight <= weight_limit; ++max_weight)
+      for(auto max_weight = 1U; max_weight <= weight_limit; ++max_weight)
       {
          // if item too heavy for current weight limit, our best result is unchanged.
          // otherwise check if we can do better by adding the item.
@@ -53,7 +54,7 @@ int knapsack(
       }
    }
 
-   for(auto item = items, max_weight = weight_limit; item > 0; --item)
+   for(auto item = num_items, max_weight = weight_limit; item > 0; --item)
    {
       assert(best[item][max_weight] >= best[item - 1][max_weight]); // "<" not possible
 
@@ -64,11 +65,11 @@ int knapsack(
          max_weight -= weight[item - 1];
       }
    }
-   assert(selected_items.size()     <= weight.size());
-   assert(best[items][weight_limit] == std::accumulate(selected_items.begin(), selected_items.end(), 0, [&profit](int sum, int const& i){ return sum + profit[i - 1]; }));
-   assert(weight_limit              >= std::accumulate(selected_items.begin(), selected_items.end(), 0, [&weight](int sum, int const& i){ return sum + weight[i - 1]; }));
+   assert(selected_items.size()         <= weight.size());
+   assert(best[num_items][weight_limit] == std::accumulate(selected_items.begin(), selected_items.end(), 0U, [&profit](unsigned int sum, unsigned int const& i){ return sum + profit[i - 1]; }));
+   assert(weight_limit                  >= std::accumulate(selected_items.begin(), selected_items.end(), 0U, [&weight](unsigned int sum, unsigned int const& i){ return sum + weight[i - 1]; }));
    
-   return best[items][weight_limit];
+   return best[num_items][weight_limit];
 }
 
 /** Knapsack problem solver.
@@ -100,17 +101,17 @@ int main()
    using std::chrono::milliseconds;
 
    // Read number of items
-   int n;
+   unsigned int n;
    cin >> n; 
    assert(n >= 1);
    
-   vector<int> profit(n);
-   vector<int> weight(n);
+   vector<unsigned int> profit(n);
+   vector<unsigned int> weight(n);
 
    // Read items
-   for(auto i = 0; i < n; ++i)
+   for(auto i = 0U; i < n; ++i)
    {
-      int id;
+      unsigned int id;
 
       cin >> id >> profit[i] >> weight[i];
 
@@ -119,11 +120,11 @@ int main()
       assert(weight[i] > 0);
    }
    // Read weight_limit
-   int weight_limit;
+   unsigned int weight_limit;
    cin >> weight_limit;
    assert(weight_limit > 0);
 
-   vector<int> selected_items;
+   vector<unsigned int> selected_items;
 
    // Compute the best selection of items
    auto                         const start_time_ms = high_resolution_clock::now();

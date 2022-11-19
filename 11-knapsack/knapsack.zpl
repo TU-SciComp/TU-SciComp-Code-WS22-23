@@ -1,6 +1,6 @@
 # TK13Nov2022
 
-param filename  := "instances/instances_n10000_2.csv";
+param filename  := "instances/ksp10000_2.csv";
 param items     := read filename as "1n" use 1;
 set   I         := { 1 .. items };
 param value [I] := read filename as "<1n> 2n" skip 1 use items;

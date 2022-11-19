@@ -13,7 +13,7 @@
 
 using namespace std;
 
-size_t const cache_size = 4096;
+size_t constexpr cache_size = 4096;
 
 int main(int const argc, char const* const* const argv)
 {
@@ -25,8 +25,8 @@ int main(int const argc, char const* const* const argv)
       return EXIT_FAILURE;
    }
 
-   auto const   first    = atoi(argv[1]);
-   auto const   last     = atoi(argv[2]);
+   auto const first    = atoi(argv[1]);
+   auto const last     = atoi(argv[2]);
 
    if (first < 1 || last < 1 || last < first)
    {
