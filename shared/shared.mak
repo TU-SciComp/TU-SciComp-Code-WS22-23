@@ -1,4 +1,4 @@
-.PHONY:		lint doc cppcheck valgrind coverage analyze check clean
+.PHONY:		lint doc cppcheck valgrind coverage analyze check clean depend
 
 LINT		=	pclp64_linux /opt/pclint/config/co-clang.lnt ../shared/shared.lnt
 CPPCHECK	=	cppcheck --enable=all 
@@ -10,6 +10,8 @@ CPPFLAGS	=	-I.
 CXXFLAGS	+=	-std=c++17 -Wall -Wextra -Wpedantic -D_GLIBCXX_DEBUG -g -O $(EXTRA_FLAGS)
 CXXF_FAST	+=	-std=c++17 -g -Ofast -DNDEBUG -march=native $(EXTRA_FLAGS)
 CXXF_COVERAGE	+=	-std=c++17 -g3 -Og --coverage $(EXTRA_FLAGS)
+
+DCXX		=	g++ -MM
 
 CXXSRC		= $(filter %.cpp, $(SOURCE))
 OBJECT		= $(CXXSRC:.cpp=.o)
@@ -54,6 +56,13 @@ check:
 
 clean:
 		-rm -f $(OBJECT) $(BINARY) *.gcno *.gcda
+
+depend:		$(SOURCE)
+		$(SHELL) -ec '$(DCXX) $(CPPFLAGS) $(SOURCE) \
+		| sed '\''s|^\([0-9A-Za-z\_]\{1,\}\)\.o|\1.o|g'\'' \
+		>depend'
+
+-include	depend
 
 %.o:		%.cpp
 		$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
