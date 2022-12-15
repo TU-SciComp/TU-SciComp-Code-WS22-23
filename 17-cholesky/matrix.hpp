@@ -175,6 +175,7 @@ void Matrix<T>::read(std::string const& filename)
    int           rows      = 0;
    int           cols      = 0;
    int           nnzs      = 0;
+   int           nnz_count = 0;
 
    if (not input)
       throw runtime_error("Cannot open file: " + filename);
@@ -198,7 +199,7 @@ void Matrix<T>::read(std::string const& filename)
          head_line = false;
 
          if ((iss >> rows >> cols >> nnzs).fail() or rows < 1 or cols < 1 or nnzs < 1 or rows != cols)
-            throw runtime_error("Syntax error line " + to_string(line_no));
+            throw runtime_error("Headline syntax error line " + to_string(line_no));
 
          size_ = rows; //lint !e732
          value_.resize(size_ * size_, 0.0);
@@ -209,12 +210,15 @@ void Matrix<T>::read(std::string const& filename)
          int col;
          T   val;
 
-         if ((iss >> row >> col >> val).fail() or row < 1 or col < 1 or row > rows or col > cols)
-            throw runtime_error("Syntax error line " + to_string(line_no));
+         if ((iss >> row >> col >> val).fail() or row < 1 or col < 1 or row > rows or col > cols or ++nnz_count > nnzs)
+            throw runtime_error("Entry syntax error line " + to_string(line_no));
 
          value(row - 1, col - 1) = val; //lint !e732
       }
    }
+   if (nnz_count != nnzs)
+      throw runtime_error("Unexpected EOF, " + to_string(nnzs - nnz_count) + " matrix entries missing");
+      
    std::cout << "Read " << filename << " with " << line_no << " lines "
              << rows << " rows " << cols << " columns " << nnzs << " nonzeros,\n";
 }

@@ -78,65 +78,70 @@ void test(
  */
 int main(int argc, char const* const* const argv)
 {
-   if (argc > 3)
+   try
    {
-      int beg  = stoi(argv[1]);
-      int end  = stoi(argv[2]);
-      int prec = stoi(argv[3]);
+      if (argc > 3)
+      {
+         int beg  = stoi(argv[1]);
+         int end  = stoi(argv[2]);
+         int prec = stoi(argv[3]);
       
-      if (beg < 1 or end < beg or prec < 1 or prec > 4)
-      {
-         cerr << "usage: " << argv[0] << " N-begin N-end Precison[1-4]\n";
-         return -1;
-      }
+         if (beg < 1 or end < beg or prec < 1 or prec > 4)
+         {
+            cerr << "usage: " << argv[0] << " N-begin N-end Precison[1-4]\n";
+            return -1;
+         }
 
-      switch(prec) 
+         switch(prec) 
+         {
+         case 1:
+            test<float>      ("Single Precision", beg, end); //lint !e732
+            break;
+         case 2: 
+            test<double>     ("Double Precision", beg, end);  //lint !e732
+            break;
+         case 3: 
+            test<long double>("Extended Precision", beg, end); //lint !e732
+            break;
+         case 4:
+            test<quad>       ("Quad Precision", beg, end);  //lint !e732
+            break;
+         }
+      }
+      else
       {
-      case 1:
-         test<float>      ("Single Precision", beg, end); //lint !e732
-         break;
-      case 2: 
-         test<double>     ("Double Precision", beg, end);  //lint !e732
-         break;
-      case 3: 
-         test<long double>("Extended Precision", beg, end); //lint !e732
-         break;
-      case 4:
-         test<quad>       ("Quad Precision", beg, end);  //lint !e732
-         break;
-      default:
-         abort();
+         Matrix<double> a{ 3, { 1,  2,  3,
+                                2,  1,  2,
+                                2,  1,  0 } };
+         vector<double> b{ 3, 2, 9 };
+
+         if (argc > 1)
+         {
+            a.read(argv[1]);
+            b = vector<double>(a.size(), 2);
+         }
+         cout << "A=\n" << a << endl;
+         cout << "b= " << b << endl;
+         auto const a_t = a.transpose();
+         cout << "A^t=\n" << a_t << endl;
+         auto const aa = a * a_t;
+         cout << "AA^t=\n" << aa << endl;
+         auto const l = aa.cholesky();
+         cout << "L=\n" << l << endl;
+         auto const l_t = l.transpose();
+         cout << "L^t=\n" << l_t << endl;
+         auto const ll = l * l_t;   
+         cout << "LL^t=\n" << ll << endl;
+         auto const x = l.triangular_solve(b);
+         cout << "x= " << x << endl;
+         auto const y = aa * x;
+         cout << "y= " << y << endl;
+         cout << "Error max norm= " << setprecision(12) << max_norm(y - b) << endl;
+         cout << "Error two norm= " << setprecision(12) << two_norm(y - b) << endl;
       }
    }
-   else
+   catch(exception const& e)
    {
-      Matrix<double> a{ 3, { 1,  2,  3,
-                             2,  1,  2,
-                             2,  1,  0 } };
-      vector<double> b{ 3, 2, 9 };
-
-      if (argc > 1)
-      {
-         a.read(argv[1]);
-         b = vector<double>(a.size(), 2);
-      }
-      cout << "A=\n" << a << endl;
-      cout << "b= " << b << endl;
-      auto const a_t = a.transpose();
-      cout << "A^t=\n" << a_t << endl;
-      auto const aa = a * a_t;
-      cout << "AA^t=\n" << aa << endl;
-      auto const l = aa.cholesky();
-      cout << "L=\n" << l << endl;
-      auto const l_t = l.transpose();
-      cout << "L^t=\n" << l_t << endl;
-      auto const ll = l * l_t;   
-      cout << "LL^t=\n" << ll << endl;
-      auto const x = l.triangular_solve(b);
-      cout << "x= " << x << endl;
-      auto const y = aa * x;
-      cout << "y= " << y << endl;
-      cout << "Error max norm= " << setprecision(12) << max_norm(y - b) << endl;
-      cout << "Error two norm= " << setprecision(12) << two_norm(y - b) << endl;
+      cerr << argv[0] << ": Exception " << e.what() << " -- aborting\n";
    }
 }

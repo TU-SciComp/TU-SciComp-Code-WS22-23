@@ -43,9 +43,10 @@ coverage:
 		make clean
 		make CXX=g++ LINKCXX=g++ CXXFLAGS="$(CXXF_COVERAGE)"
 		bash ./test.sh ./$(BINARY)
-		lcov -d . -c >gcov/$(BINARY).capture  # --include  \*/knapsack/\* 
+		lcov -d . -c >gcov/z.capture  
+		lcov -d . -r gcov/z.capture "*11/*" >gcov/$(BINARY).capture
 		genhtml -o gcov gcov/$(BINARY).capture
-		-rm gcov/$(BINARY).capture
+		-rm gcov/z.capture
 
 analyze:
 		make clean
