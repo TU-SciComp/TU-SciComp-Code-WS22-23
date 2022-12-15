@@ -21,14 +21,14 @@
  */
 bool Knapsack::is_valid() const
 {
-   if (profit_.size() != num_items_ || profit_.size() != weight_.size())
+   if (profit_.size() != num_items_ or profit_.size() != weight_.size())
       return false;
 
    if (num_items_ == 0)
       return true;
 
    if (  *std::min_element(weight_.begin(), weight_.end()) < 1
-      || *std::min_element(profit_.begin(), profit_.end()) < 1)
+      or *std::min_element(profit_.begin(), profit_.end()) < 1)
       return false;
 
    return true;

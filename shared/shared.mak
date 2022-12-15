@@ -7,7 +7,7 @@ ANALYZER	=	scan-build-14
 #
 DOXY		=	doxygen
 CPPFLAGS	=	-I.
-CXXFLAGS	+=	-std=c++17 -Wall -Wextra -Wpedantic -D_GLIBCXX_DEBUG -g -O $(EXTRA_FLAGS)
+CXXFLAGS	+=	-std=c++17 -Wall -Wextra -Wpedantic -Wshadow -D_GLIBCXX_DEBUG -g -O $(EXTRA_FLAGS)
 CXXF_FAST	+=	-std=c++17 -g -Ofast -DNDEBUG -march=native $(EXTRA_FLAGS)
 CXXF_COVERAGE	+=	-std=c++17 -g3 -Og --coverage $(EXTRA_FLAGS)
 
@@ -17,7 +17,7 @@ CXXSRC		= $(filter %.cpp, $(SOURCE))
 OBJECT		= $(CXXSRC:.cpp=.o)
 
 $(BINARY): 	$(OBJECT)
-		$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
+		$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@ $(LIBS)
 
 fast:
 		make clean

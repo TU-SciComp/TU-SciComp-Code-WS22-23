@@ -23,9 +23,9 @@ class Knapsack
 
    Knapsack() : num_items_(0), weight_(0), profit_(0), weight_limit_(0) { assert(is_valid()); };
 
-   Knapsack(const Knapsack&)            = default; 
+   Knapsack(Knapsack const&)            = default; 
    Knapsack(Knapsack&&)                 = default; 
-   Knapsack& operator=(const Knapsack&) = default;
+   Knapsack& operator=(Knapsack const&) = default;
    Knapsack& operator=(Knapsack&&)      = default;
    ~Knapsack()                          = default;   
 };
