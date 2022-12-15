@@ -314,11 +314,26 @@ T two_norm(std::vector<T> const& vec)
 #endif
 
 
+#if 1 // Which is nicer and easier to understand?
 template <typename T>
 T max_norm(std::vector<T> const& vec)
 {
-   return *max_element(vec.begin(), vec.end());
+   T max_x = 0.0;
+   
+   for(auto x : vec)
+      if (T abs_x = absval(x); abs_x > max_x)
+         max_x = abs_x;
+
+   return max_x;
 }
+#else
+template <typename T>
+T max_norm(std::vector<T> const& vec)
+{
+   return absval(*max_element(vec.begin(), vec.end(),
+         [](T const& a, T const& b) { return absval(a) < absval(b); }));
+}
+#endif
 
 
 // c = a - b

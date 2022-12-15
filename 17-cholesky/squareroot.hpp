@@ -40,5 +40,29 @@ inline __float128 squareroot(__float128 const x)
    return sqrtq(x);
 }
 
+inline float absval(float const x)
+{
+   return fabsf(x);
+}
+
+
+inline double absval(double const x)
+{
+   return fabs(x);
+}
+
+
+inline long double absval(long double const x)
+{
+   return fabsl(x);
+}
+
+
+inline __float128 absval(__float128 const x)
+{
+   return fabsq(x);
+}
+
+
 #endif // !SQUAREROOT_H
 
